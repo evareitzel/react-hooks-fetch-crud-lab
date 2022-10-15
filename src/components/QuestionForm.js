@@ -19,7 +19,41 @@ function QuestionForm(props) {
 
   function handleSubmit(event) {
     event.preventDefault();
-    console.log(formData);
+    // console.log('FormData: ', formData);
+    const newQuestion = {
+      "prompt": formData.prompt,
+      "answers": [
+        formData.answer1,
+        formData.answer2,
+        formData.answer3,
+        formData.answer4
+      ],
+        "correctIndex": formData.correctIndex
+      }
+      // console.log(newQuestion)
+
+    // Eva's POST request
+    fetch(`http://localhost:4000/questions`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newQuestion),
+    })
+    .then(r => r.json())
+    .then(data => {
+      // console.log('Success: ', data)
+      // clear  form inputs
+      setFormData({
+        prompt: "",
+        answer1: "",
+        answer2: "",
+        answer3: "",
+        answer4: "",
+        correctIndex: 0,
+      })
+    })
+    .catch((error) => console.error('Error: ', error))   
   }
 
   return (
